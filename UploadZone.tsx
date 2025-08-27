@@ -20,3 +20,51 @@
     </div>
   ));
 }
+
+// changes
+
+// ... existing imports
+import { useAppDispatch } from "../../store/hooks";
+import {
+  removeFileFromUpload,
+  clearAllFiles,
+} from "../../store/slices/assetsSlice";
+
+// Inside the component:
+const dispatch = useAppDispatch();
+
+// Update the removeFile function:
+const removeFile = (id: string) => {
+  dispatch(removeFileFromUpload(id));
+};
+
+// Update the clearFiles function:
+const clearFiles = () => {
+  dispatch(clearAllFiles());
+};
+
+// Update the JSX to use id instead of index:
+{
+  selectedFiles.map((file, index) => {
+    // You'll need to get the id from your Redux state or generate it consistently
+    const item = uploadProgress.find((item) => item.file.name === file.name);
+    const id = item?.id || `temp-${index}`;
+
+    return (
+      <div
+        key={id}
+        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+      >
+        {/* ... rest of the code */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => removeFile(id)}
+          className="p-1"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+      </div>
+    );
+  });
+}
